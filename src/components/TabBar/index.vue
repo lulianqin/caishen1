@@ -5,31 +5,36 @@
             <img
                 slot="icon"
                 slot-scope="props"
-                :src="props.active ? icon[0].active : icon[0].normal"/>
+                :src="props.active ? icon[0].active : icon[0].normal"
+                v-on:click="$emit('change-bg', 0)"/>
         </van-tabbar-item>
         <van-tabbar-item>
             <img
                 slot="icon"
                 slot-scope="props"
-                :src="props.active ? icon[1].active : icon[1].normal"/>
+                :src="props.active ? icon[1].active : icon[1].normal"
+                v-on:click="$emit('change-bg', 1)"/>
         </van-tabbar-item>
         <van-tabbar-item>
             <img
                 slot="icon"
                 slot-scope="props"
-                :src="props.active ? icon[2].active : icon[2].normal"/>
+                :src="props.active ? icon[2].active : icon[2].normal"
+                v-on:click="$emit('change-bg', 2)"/>
         </van-tabbar-item>
         <van-tabbar-item>
             <img
                 slot="icon"
                 slot-scope="props"
-                :src="props.active ? icon[3].active : icon[3].normal"/>
+                :src="props.active ? icon[3].active : icon[3].normal"
+                v-on:click="$emit('change-bg', 3)"/>
         </van-tabbar-item>
         <van-tabbar-item>
             <img
                 slot="icon"
                 slot-scope="props"
-                :src="props.active ? icon[4].active : icon[4].normal"/>
+                :src="props.active ? icon[4].active : icon[4].normal"
+                v-on:click="$emit('change-bg', 4)"/>
         </van-tabbar-item>
     </van-tabbar>   
 </template>

@@ -29,6 +29,14 @@ export default {
                 normal: liguizu,
                 active: liguizu2
             }],
+            csIndex1:[0,2,0,1,3,4],//hash对应底部菜单序号
+        }
+    },
+    created: function () {
+        var hashVal = window.location.hash;
+        if(hashVal.indexOf("#n")>-1)
+        {
+           this.active=this.csIndex1[parseInt(hashVal.replace("#n",""))];
         }
     }
 }

@@ -1,45 +1,9 @@
 <template>
     <div :class="'home caishen '+bgClass">
         <!--底部菜单-->
-        <van-tabbar v-model="active">
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[0].active : icon[0].normal"/>
-            </van-tabbar-item>
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[1].active : icon[1].normal"/>
-            </van-tabbar-item>
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[2].active : icon[2].normal"/>
-            </van-tabbar-item>
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[3].active : icon[3].normal"/>
-            </van-tabbar-item>
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[4].active : icon[4].normal"/>
-            </van-tabbar-item>
-        </van-tabbar>
-        <!--左侧内容-->
-        <div class="left-wrap">
-            <div class="text">万两黄金贵一炉宝篆诚</div>
-            <div class="left-arrow mt15" @click="handleArrowClick">
-                <van-icon name="arrow"></van-icon>
-            </div>
-        </div>
+        <tab-bar v-on:change-bg="footBarClick" />
+        <!--左侧菜单-->
+        <left-menu/>
         <!--右侧按钮-->
         <div class="right-wrap">
             <div class="right-btn" @click="handleKaiguangClick">開光</div>
@@ -48,22 +12,6 @@
             <div class="right-btn mt15" @click="handleYunshiClick">運勢</div>
             <div class="right-btn mt15" @click="handleChongqianClick">抽簽</div>
         </div>
-        <!--会员中心-->
-        <van-popup v-model="memberShow" class="member-center">
-            <div class="member-wrap">
-                <div class="member-module">会员中心</div>
-                <div class="member-module" @click="checkUserInfo">个人信息</div>
-                <div class="member-module" @click="checkMyAccount">我的账户</div>
-                <div class="member-module">我的运势</div>
-                <div class="member-module">我的抽签</div>
-                <div class="member-module" @click="checkAddress">常用地址</div>
-                <div class="member-module" @click="checkShare">分享有礼</div>
-                <div class="member-module none" @click="checkNotice">平台公告</div>
-            </div>
-            <div class="right-arrow" @click="handleRightArrowClick">
-                <van-icon name="arrow-left"></van-icon>
-            </div>
-        </van-popup>
         <!--拜一拜弹出层-->
         <van-popup v-model="bybShow" class="byb">
             <div class="byb-wrap">
@@ -77,21 +25,6 @@
             <img src="../../assets/images/qiantong.png"/>
             <img src="../../assets/images/chouqian-btn.png" @click="handleChouqian" class="btn"/>
         </van-popup>
-        <!--抽签结果弹出层-->
-        <van-popup v-model="cqResultShow" class="cqResult">
-            <div class="cqResult-wrap">
-                <p class="title">你抽到了第十六签</p>
-                <p class="subTitle">孔子在陈绝粮 己卯</p>
-                <div class="content">
-                    <p>财运易卦占卜联合紫微斗数及易经卦象推断现状与未来的吉凶，全面预知你财运上的风险和机会，让你赚钱致富不再投路无门！</p>
-                    <p class="pt20">【签文】</p>
-                    <p>汉室地基要造成，无疑阻滞不通亨，回思勤苦劳心处，六出祁山寿世崩</p>
-                    <p>【解签】</p>
-                    <p>米力仙注：成事在天，谋事在人，不计得失，埋首向前</p>
-                </div>
-                <div class="scroll-btn" @click="handleCloseClick('cqResultShow')">上上签</div>
-            </div>
-        </van-popup>
         <!--贡品弹出层-->
         <van-popup v-model="gongpinShow" class="gongpin">
             <div class="gongpin-wrap scroll-wrap">
@@ -103,9 +36,9 @@
                 <div class="content">
                     <p class="title">贡品</p>
                     <p class="text">每人限奉请一套，开光正品，改变新一年的运气，从此刻开始!</p>
-                    <p class="money">1680.00元</p>
+                    <p class="money">500.00元</p>
                 </div>
-                <div class="scroll-btn">微信支付</div>
+                <div class="scroll-btn" @click="wxpay('gp')">微信支付</div>
             </div>
         </van-popup>
         <!--敬香弹出层-->
@@ -118,13 +51,26 @@
                 <div class="content">
                     <p class="title">敬香</p>
                     <p class="text">每人限奉请一套，开光正品，改变新一年的运气，从此刻开始!</p>
-                    <p class="money">1680.00元</p>
+                    <p class="money">1.00元</p>
                 </div>
-                <div class="scroll-btn">微信支付</div>
+                <div class="scroll-btn"  @click="wxpay('jx')">微信支付</div>
             </div>
         </van-popup>
         <!--开光-->
-        <div class="kaiguang" v-if="kaiguangShow">
+        <van-popup v-model="kaiguangShow" class="kaiguang">
+            <div class="kaiguang-wrap scroll-wrap">
+                <van-icon name="cross" class="close-btn" @click="handleCloseClick('kaiguangShow')"></van-icon>
+                <div class="content">
+                    <p class="title">开光</p>
+                    <p class="text">每人限奉请一套,开光正品,改变新一年的运气，从此刻开始!</p>
+                    <p class="money">599.00元</p>
+                </div>
+
+                <div v-if="kgSuccessShow" class="scroll-btn">已开光</div>
+                <div v-else class="scroll-btn" @click="wxpay('kg')">微信支付</div>
+            </div>
+        </van-popup>
+        <!-- <div class="kaiguang" v-if="kaiguangShow">
             <div class="kaiguang-wrap">
                 <div class="content">
                     <p class="title">开光</p>
@@ -133,29 +79,68 @@
                 </div>
                 <div class="scroll-btn" @click="handleWechatPay">微信支付</div>
             </div>
-        </div>
+        </div> -->
         <!--开光成功-->
         <transition name="bounce">
             <div class="kgSuccess" v-if="kgSuccessShow">
-                <img src="../../assets/images/yuanbao.png"/>
+                <!-- <img src="../../assets/images/yuanbao.png"/> -->
             </div>
         </transition>
+        <!--掉金元宝-->
+        <div id="yuanbao"></div>
     </div>
 </template>
 <script>
-    import home from './index.js'
-    export default home
+    import home from './index.js';
+    export default home;
 </script>
+
 <style lang="less" scoped>
     @import url('./index.less');
 </style>
+
 <style>
+    #yuanbao {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        z-index: 9999;
+        display: none;
+    }
+    #yuanbao>div{
+        position: relative;
+        height: 100%;
+        width:100%;
+        z-index: 1;
+    }
+    #yuanbao img
+    {
+        position:absolute;
+        /* animation:mymove 3s infinite;
+        -webkit-animation:mymove 3s infinite; */
+        height: auto;
+    }
+    @keyframes mymove
+    {
+        from {top:-200px;}
+        to {top:1500px;}
+    }
+
+    @-webkit-keyframes mymove /*Safari and Chrome*/
+    {
+        from {top:-200px;}
+        to {top:1500px;}
+    }
+    .home .left-common .left-wrap .text{
+        display: block !important;
+    }
     .caishen .van-popup.member-center {
         left: 0;
         transform: translate3d(0, -50%, 0);
     }
     .caishen .van-popup {
         background: none;
+        overflow: hidden;
     }
     .caishen .van-icon {
         font-size: 25px;

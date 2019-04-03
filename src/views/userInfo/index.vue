@@ -22,12 +22,16 @@
             <p class="tips">提示：本应用来源于中国传统民俗文化，并非现代科学研究成果，仅供娱乐！</p>
         </div>
         <!--底部菜单-->
-        <tab-bar/>
+        <!-- <tab-bar/> -->
+        <!--左侧菜单-->
+        <left-menu/>
+         <van-button type="info" class="addBtn" @click="saveUserInfo">保存</van-button>
         <!--出生年月弹层-->
         <van-popup v-model="dateShow" :overlay="false" position="bottom">
             <van-datetime-picker
                 v-model="currentDate"
                 type="date"
+                :min-date="minDate"
                 @confirm="handleDateConfirm"
                 @cancel="handleDateCancel"/>
         </van-popup>
@@ -39,7 +43,8 @@
 </template>
 <script>
     import userInfo from "./index.js";
-    export default userInfo
+    export default userInfo;
+    //this.$root.getUserInfo();
 </script>
 <style lang="less" scoped>
     @import url('./index.less');

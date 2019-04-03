@@ -5,13 +5,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>caishen</title>
+    <title>五福财神</title>
+    <style>
+     .bgm-wrap {
+        position: absolute;
+        z-index: 200;
+        width: 30px;
+        height: 30px;
+        right: 10px;
+        top: 10px;
+        overflow: hidden;
+    } 
+      .bgm-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        background-image: url(/ico_music.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    .bgm-btn.rotate {
+      -webkit-animation: rotating 1.2s linear infinite;
+      animation: rotating 1.2s linear infinite;
+    }
+    @-webkit-keyframes rotating{
+      0%{transform:rotate(0deg)}
+      to{transform:rotate(1turn)}
+    }
+    @keyframes rotating{
+      0%{transform:rotate(0deg)}
+      to{transform:rotate(1turn)}
+    }
+</style>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but caishen doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>对不起，当前浏览器不支持JavaScript，请确认是否已开启支持JavaScript。</strong>
     </noscript>
     <div id="app"></div>
+    <div class="bgm-wrap">
+      <div class="bgm-btn rotate" style="animation-play-state: running;" id="playbtn" onclick="playbox();"><audio id="audio" loop=""  name="myMusic" src="/music.mp3" autoplay="" preload=""></audio></div>
+    </div>
     <!-- built files will be auto injected -->
+    <script>
+      // $(function(){
+      //   $(".bgm-btn").click(function(){
+      //       playbox();
+      //   });
+      // });
+      function playbox(){
+        var audio=document.getElementById("audio");
+        var playbtn=document.getElementById("playbtn");
+        //alert(audio);
+        if(audio!==null){            
+          //检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+          if(audio.paused)                     {                
+            audio.play();
+            //$(".bgm-btn").css("animation-play-state","running");
+            playbtn.style.setProperty('animation-play-state', 'running');
+          }else{
+            audio.pause();
+            //$(".bgm-btn").css("animation-play-state","paused");
+            playbtn.style.setProperty('animation-play-state', 'paused');
+          }
+        }
+      }
+      playbox();
+    </script>
   </body>
 </html>

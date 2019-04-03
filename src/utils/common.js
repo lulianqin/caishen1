@@ -16,3 +16,47 @@ export function dateFtt(fmt, date)   {
   fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
   return fmt;   
 }
+
+//获取cookie、
+export function getCookie(name) {
+  var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+  if (arr = document.cookie.match(reg))
+    return (arr[2]);
+  else
+    return null;
+}
+ 
+//设置cookie,增加到vue实例方便全局调用
+export function setCookie (c_name, value, expiredays) {
+  var exdate = new Date();
+  exdate.setDate(exdate.getDate() + expiredays);
+  document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString())+";path=/";
+}
+ 
+//删除cookie
+export function delCookie (name) {
+  var exp = new Date();
+  exp.setTime(exp.getTime() - 1);
+  var cval = getCookie(name);
+  if (cval != null)
+   document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+}
+
+//判断是否是微信浏览器的函数
+export function isWeiXin(){
+  //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+  var ua = window.navigator.userAgent.toLowerCase();
+  //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+  if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+      return true;
+  }else{
+      return false;
+  }
+}
+export function GetQueryString(name) { 
+　　　var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+      var r = window.location.search.substr(1).match(reg); 
+　　　if (r!=null) return (r[2]); 
+　　　return null; 
+}  
+  

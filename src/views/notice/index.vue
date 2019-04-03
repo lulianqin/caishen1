@@ -17,44 +17,14 @@
                 v-for="(item, index) in list"
                 :key="index"
                 class="notice-item">
+                <a :href="'/Mobile/Article/Detail/'+item.id">
                 <p class="title">{{ item.title }}</p>
                 <div class="content">{{ item.content }}</div>
                 <p class="time">{{ item.date }}</p>
+                </a>
             </div>
         </van-list>
-        <!--底部菜单-->
-        <van-tabbar v-model="active">
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[0].active : icon[0].normal"/>
-            </van-tabbar-item>
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[1].active : icon[1].normal"/>
-            </van-tabbar-item>
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[2].active : icon[2].normal"/>
-            </van-tabbar-item>
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[3].active : icon[3].normal"/>
-            </van-tabbar-item>
-            <van-tabbar-item>
-                <img
-                    slot="icon"
-                    slot-scope="props"
-                    :src="props.active ? icon[4].active : icon[4].normal"/>
-            </van-tabbar-item>
-        </van-tabbar>
+        <left-menu/>
     </div>
 </template>
 <script>

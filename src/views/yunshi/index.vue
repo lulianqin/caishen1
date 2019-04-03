@@ -47,37 +47,21 @@
          <!--生日选择：日期弹出层-->
         <van-popup v-model="dateShow" :overlay="false" position="bottom" class="birthday">
             <van-datetime-picker
+                v-model="currentDate"
                 type="datetime"
+                :min-date="minDate"
                 @confirm="handleDateConfirm"
                 @cancel="handleDateCancel"/>
         </van-popup>
         <!--运势结果-->
         <div class="yunshi-result" v-if="yunshiResultShow">
             <div class="yunshi-wrap">
-                <div class="title">第四十四卦：天风姤</div>
-                <p>针对您所提问的问题：是否宜合伙求财</p>
-                <p>您所取到的卦象如下：《易经》第四十四卦:</p>
-                <p>【卦名】天风姤</p>
-                <p>【卦文】姤：女壮，勿用取女。</p>
-                <p>
-                    《彖》曰：姤，遇也，柔遇刚也。“勿用取女”，不可与长也。
-                    天地相遇，品物咸章也。刚遇中正，天下大行也。姤之时义大
-                    矣哉。
-                </p>
-                <p>《象》曰：天下有风，姤；后以施命诰四方。</p>
-                <div class="title pd">卦象解析</div>
-                <p>【解卦】</p>
-                <p>
-                    姤，相遇也。上乾下巽，天下有风，一阴五阳，有色难、诱
-                    惑。代表容易发生预期外的事，偶事件易引发心性、行为之改
-                    变。
-                </p>
-                <p>【近况分析】</p>
-                <p>小凶，对方对于合作事宜心存迷惘，有拖延倾向，容易受到外界的诱惑，不利急于合伙求财。</p>
+                <div class="title">{{article.Art_Title}}</div>
+                <div class="content" v-html="article.Art_Content"></div>
             </div>
         </div>
         <!--底部菜单-->
-        <tab-bar/>
+        <!-- <tab-bar/> -->
     </div>
 </template>
 <script>

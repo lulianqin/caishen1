@@ -1,3 +1,8 @@
+import TabBar from '@/components/TabBar/index.vue'
+import LeftMenu from '@/components/LeftMenu/index.vue'
+import { getCookie,isWeiXin } from '@/utils/common.js'
+import $ from 'jquery'
+
 const fanli = require('@/assets/images/fanli.png'),
       fanli2 = require('@/assets/images/fanli2.png'),
       guanyu = require('@/assets/images/guanyu.png'),
@@ -10,6 +15,10 @@ const fanli = require('@/assets/images/fanli.png'),
       liguizu2 = require('@/assets/images/liguizu2.png')
 
 export default {
+    components: {
+        TabBar,
+        LeftMenu
+    } ,
     data() {
         return {
             bgClass: 'caishen3',
@@ -38,7 +47,55 @@ export default {
             jingxiangShow: false,   //敬香弹出层是否显示
             kaiguangShow: false,   //开光弹框是否显示
             kgSuccessShow: false,   //开光成功弹框是否显示
+            csIndex1:[0,3,1,2,4,5],//hash对应财神背景序号
+            csIndex2:[0,2,3,1,4,5]//底部菜单对hash财神序号
         }
+    },
+    created: function () {
+        var openid = getCookie("openid");
+        var username = getCookie("username");
+        var $vue = this;
+        var hashVal = window.location.hash;
+        //财神背景
+        if(hashVal.indexOf("#n")>-1)
+        {
+           this.bgClass="caishen" + this.csIndex1[parseInt(hashVal.replace("#n",""))];
+        }
+        if(openid)
+        {
+            window.openid = openid;
+            localStorage.setItem("openid",openid);
+        }
+        // else if(localStorage && localStorage.getItem("openid"))
+        // {
+        //     window.openid = localStorage.getItem("openid");
+        // }
+        else if(isWeiXin()==true){
+            location.href="/Mobile/WeiXin/GotoOauth?state=/";
+        }
+        else if(!username || username==""){
+            //location.href="/Mobile/Login";
+        }
+        //获取用户基本信息
+        $.ajax({
+            type: "GET",
+            url: "/Mobile/Api/Info",
+            data: {},
+            dataType: "json",
+            async:false,
+            success: function(rst){
+                if(rst.status==0){
+                    if(rst.data.U_Is_Check==1)
+                    {
+                        $vue.kgSuccessShow=true;            
+                    }
+                }
+                else{
+                    if(rst)
+                    alert(rst.msg);
+                }
+            }
+        });
     },
     methods: {
         //左侧展开按钮点击事件，展开会员中心
@@ -75,8 +132,31 @@ export default {
         },
         //抽签弹出层: 点击抽签按钮点击事件
         handleChouqian() {
-            this.chouqianShow = false
-            this.$router.push('/chouqianResult')
+            var $vue = this;
+            $vue.$dialog.confirm({
+                title: '',
+                message: '抽签需支付1元，是否支付？'
+              }).then(() => {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Mobile/Api/PayThing",
+                        data: {"thing":"cq"},
+                        dataType: "json",
+                        async:false,
+                        success: function(rst){
+                            if(rst.status==0){
+                                $vue.$notify({message:'支付成功',background: '#07c160'});
+                                $vue.chouqianShow = false
+                                $vue.$router.push('/chouqianResult')
+                            }
+                            else{
+                                alert(rst.msg);
+                            }
+                        }
+                    });
+              }).catch(() => {
+                $vue.$notify('操作已取消');
+              });
         },
         //贡品按钮点击事件
         handleGongpinClick() {
@@ -102,6 +182,91 @@ export default {
         handleWechatPay() {
             this.kaiguangShow = false
             this.kgSuccessShow = true
+        },
+        //微信
+        wxpay(thing){
+            var $vue = this;
+            $vue.$dialog.confirm({
+                title: '',
+                message: '确认使用余额支付？'
+              }).then(() => {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Mobile/Api/PayThing",
+                        data: {thing:thing},
+                        dataType: "json",
+                        async:false,
+                        success: function(rst){
+                            if(rst.status==0){
+                                //this.article = rst.data;
+                                if(thing=="kg")
+                                {
+                                    $vue.kaiguangShow = false
+                                    $vue.kgSuccessShow = true
+                                    $vue.$notify({message:'开光成功',background: '#07c160'});
+                                }
+                                else if(thing=="jx"){
+                                    $vue.$notify({message:'支付成功',background: '#07c160'});
+                                    $vue.handleShowYuanBao();
+                                }
+                            }
+                            else{
+                                alert(rst.msg);
+                            }
+                        }
+                    });
+              }).catch(() => {
+                $vue.$notify('操作已取消');
+              });
+        },
+        footBarClick(val)
+        {
+            //var hashVal="";
+            val++;
+            this.bgClass = 'caishen' + val;
+            //hashVal="#n"+this.csIndex2[val];
+            //window.location.hash = hashVal;
+        },
+        //显示元宝效果
+        handleShowYuanBao(){
+            var $yuanbao = $("#yuanbao");
+            var i;
+            var lines = [],
+                    yb_maxSpeed = 5,
+                    yb_spacing = 40,
+                    yb_xSpacing = 0,
+                    yb_n = $(window).width() / yb_spacing,
+                    yb_srcs = ["/img/yb_01.png", "/img/yb_02.png", "/img/yb_03.png","/img/yb_01.png", "/img/yb_02.png", "/img/yb_03.png"],
+                    yb_i;
+
+            this.jingxiangShow = false;
+            $yuanbao.show();
+            for (yb_i = 0; yb_i < yb_n; yb_i++){
+                yb_xSpacing += yb_spacing;
+                lines.push({
+                    x: yb_xSpacing,
+                    y: -Math.round(Math.random()*300),
+                    rotate: Math.round(Math.random()*180),
+                    width: 40+ Math.round(Math.random()*40),
+                    speed: Math.random()*yb_maxSpeed + 5,
+                    src: yb_srcs[Math.floor(Math.random() * yb_srcs.length)]
+                });
+            }
+            for (i = 0; i < yb_n; i++){
+                var $img = $("<img src='"+lines[i].src+"'/>");
+                $img.css({
+                    'transform':'rotate('+lines[i].rotate+'deg)',
+                    'animation':'mymove '+lines[i].speed+'s infinite',
+                    'top':lines[i].y+'px',
+                    'left':lines[i].x+'px',
+                    'width':lines[i].width+'px',
+                });
+                $img.appendTo("#yuanbao");
+            }
+            setTimeout(function(){
+                $yuanbao.fadeOut(2000);
+                $yuanbao.html("");
+            },10000);
         }
     },
     watch: {

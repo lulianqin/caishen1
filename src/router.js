@@ -6,11 +6,11 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: "shen",//process.env.BASE_URL,
   routes: [{
       path: '/',
       name: 'home',
-      component: () => import('@/views/home/index.vue')// Home
+      component: () => import('@/views/home/index.vue')//component: Home
     },{
       path: '/about',
       name: 'about',
@@ -26,6 +26,14 @@ export default new Router({
       path: '/myAccount',
       name: '我的账户',
       component: () => import('@/views/myAccount/index.vue')
+    },{
+      path: '/myYunShi',
+      name: '我的运势',
+      component: () => import('@/views/myYunShi/index.vue')
+    },{
+      path: '/myChouQian',
+      name: '我的抽签',
+      component: () => import('@/views/myChouQian/index.vue')
     },{
       path: '/notice',
       name: '平台公告',
