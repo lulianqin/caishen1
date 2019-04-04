@@ -24,7 +24,7 @@
                 </div>
                 <div class="yuanbao-item">
                     <div class="subTitle">
-                        <span>已提现元宝</span>
+                        <span>可提现额度</span>
                         <van-icon name="play"/>
                     </div>
                     <p>{{txAmount}}</p>

@@ -44,7 +44,7 @@ export default new Router({
       component: () => import('@/views/share/index.vue')
     }, {
       path: '/weChatTest',
-      name: '微信号测试',
+      name: '昵称凶吉测试',
       component: () => import('@/views/weChatTest/index.vue')
     }, {
       path: '/address',

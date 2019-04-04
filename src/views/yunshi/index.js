@@ -59,37 +59,49 @@ export default {
                 title: '',
                 message: '测运势需支付1元，是否支付？'
               }).then(() => {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Mobile/Api/PayThing",
-                        data: {"thing":"ys"},
-                        dataType: "json",
-                        async:false,
-                        success: function(rst){
-                            if(rst.status==0){
-                               
-                                const myToast = $vue.$toast.loading({
-                                    duration: 0, // 持续展示 toast
-                                    forbidClick: true, // 禁用背景点击
-                                    loadingType: 'spinner',
-                                    message: '测算中...'
-                                  });
-                                  const timer = setTimeout(() => {
-                                        $vue.$toast.clear();
-                                        $vue.yunshiResultShow = true
-                                  }, 2000);
-
-                            }
-                            else{
-                                alert(rst.msg);
-                            }
-                        }
-                    });
+                $vue.payRequest("ys");
               }).catch(() => {
                 $vue.$notify('操作已取消');
               });
 
             
         },
+        payRequest(thing)
+        {
+            var $vue = this;
+            $.ajax({
+                type: "GET",
+                url: "/Mobile/Api/PayThing",
+                data: {"thing":thing},
+                dataType: "json",
+                async:false,
+                success: function(rst){
+                    if(rst.status==0){
+                       
+                        const myToast = $vue.$toast.loading({
+                            duration: 0, // 持续展示 toast
+                            forbidClick: true, // 禁用背景点击
+                            loadingType: 'spinner',
+                            message: '测算中...'
+                          });
+                          const timer = setTimeout(() => {
+                                $vue.$toast.clear();
+                                $vue.yunshiResultShow = true
+                          }, 2000);
+
+                    }
+                    else if(rst.status==-2)//余额不足
+                    {
+                        //微信在线支付
+                        callpay(rst.amount,function(){
+                            $vue.payRequest(thing);
+                        });
+                    }
+                    else{
+                        alert(rst.msg);
+                    }
+                }
+            });
+        }
     }   
 }

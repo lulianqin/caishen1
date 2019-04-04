@@ -90,4 +90,5 @@
         font-size: 9px;
         /* transform: scale(0.75); */
     }
+    .yunshi img{max-width: 100% !important;}
 </style>

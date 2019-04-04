@@ -7,10 +7,11 @@
         <!--右侧按钮-->
         <div class="right-wrap">
             <div class="right-btn" @click="handleKaiguangClick">開光</div>
-            <div class="right-btn mt15" @click="handleJingxiangClick">敬香</div>
-            <div class="right-btn mt15" @click="handleGongpinClick">貢品</div>
-            <div class="right-btn mt15" @click="handleYunshiClick">運勢</div>
-            <div class="right-btn mt15" @click="handleChongqianClick">抽簽</div>
+            <div class="right-btn mt10" @click="handleJingxiangClick">敬香</div>
+            <div class="right-btn mt10" @click="handleGongpinClick">貢品</div>
+            <div class="right-btn mt10" @click="handleYunshiClick">運勢</div>
+            <div class="right-btn mt10" @click="handleChongqianClick">抽簽</div>
+            <div class="right-btn mt10" @click="handleNiChengClick">昵称</div>
         </div>
         <!--拜一拜弹出层-->
         <van-popup v-model="bybShow" class="byb">
@@ -88,6 +89,12 @@
         </transition>
         <!--掉金元宝-->
         <div id="yuanbao"></div>
+        <!--贡品香炉-->
+        <div id="gongpin_line">
+            <img src="/img/gongpin.png" class="gongpin_i" v-if="show_gongpin_i"/>
+            <img src="/img/xianglu.png" class="xianglu_i" v-if="show_xianglu_i" style="width:100px;"/>
+            <img src="/img/gongpin.png" class="gongpin_i" v-if="show_gongpin_i"/>
+        </div>
     </div>
 </template>
 <script>
@@ -100,6 +107,16 @@
 </style>
 
 <style>
+    #gongpin_line {
+        width: 100%;
+        position: fixed;
+        bottom: 110px;
+        text-align: center;
+        left:0;
+    }
+    #gongpin_line .gongpin_i{
+        margin: 0 10px;
+    }
     #yuanbao {
         height: 100%;
         width: 100%;
@@ -162,6 +179,7 @@
             transform: scale(1);
         }
     }
+    .mt10{margin-top:10px;}
 </style>
 
 

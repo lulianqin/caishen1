@@ -45,29 +45,40 @@
                     border-radius: 4px;
                 }
             }
+            img{
+                max-width: 100%;
+            }
         }
     }
-}
-//运势结果弹出层
-.yunshi-result {
-    position: fixed;
-    top: 170px;
-    left: 50%;
-    transform: translate3d(-50%, 0, 0);
-    color: #5b4c05;
-    text-align: left;
-    .yunshi-wrap {
-        top: 0;
-        p {
-            line-height: 15px;
-            transform: scale(0.83);
-        }
-        .title {
-            padding: 30px 0 20px;
-            text-align: center;
-            font-size: 15px;
-            &.pd {
-                padding: 20px 0 0;
+    //运势结果弹出层
+    .yunshi-result {
+        position: fixed;
+        top: 170px;
+        left: 50%;
+        transform: translate3d(-50%, 0, 0);
+        color: #5b4c05;
+        text-align: left;
+        .yunshi-wrap {
+            top: 0;
+            .content{
+                color: #5b4c05;
+                font-size: 12px;
+                line-height: 1.8;
+            }
+            p {
+                line-height: 15px;
+                transform: scale(0.83);
+            }
+            img{
+                max-width: 100%;
+            }
+            .title {
+                padding: 30px 0 20px;
+                text-align: center;
+                font-size: 15px;
+                &.pd {
+                    padding: 20px 0 0;
+                }
             }
         }
     }

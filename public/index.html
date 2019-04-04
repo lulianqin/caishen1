@@ -47,12 +47,8 @@
       <div class="bgm-btn rotate" style="animation-play-state: running;" id="playbtn" onclick="playbox();"><audio id="audio" loop=""  name="myMusic" src="/music.mp3" autoplay="" preload=""></audio></div>
     </div>
     <!-- built files will be auto injected -->
+    <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
     <script>
-      // $(function(){
-      //   $(".bgm-btn").click(function(){
-      //       playbox();
-      //   });
-      // });
       function playbox(){
         var audio=document.getElementById("audio");
         var playbtn=document.getElementById("playbtn");
@@ -70,7 +66,68 @@
           }
         }
       }
+      
+        //调用微信JS api 支付
+        function jsApiCall(amount,callback) {
+          var wxJsApiParam="";
+          $.ajax({
+                type: "GET",
+                url: "/Mobile/Pay/GetJsApiPayParam",
+                data: {total_fee:amount},
+                dataType: "json",
+                async:false,
+                success: function(rst){
+                    if(rst.status==0){
+                      wxJsApiParam = rst.data;
+                    }
+                    else{
+                        alert(rst.msg);
+                        return false;
+                    }
+                }
+            });
+          WeixinJSBridge.invoke(
+          'getBrandWCPayRequest',
+          $.parseJSON(wxJsApiParam),//josn串
+             function (res) {
+                 WeixinJSBridge.log(res.err_msg);
+                 //alert(res.err_code + res.err_desc + res.err_msg);
+                 if (res.err_msg == "get_brand_wcpay_request:ok") {
+                     //alert("微信支付成功!");
+                    if(callback)
+                    {
+                        callback();
+                    }
+                 } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                     //alert("用户取消支付!");
+                 } else {
+                     //alert(res.err_msg);
+                     alert(JSON.stringify(res));
+                     //alert("支付失败!");
+                 }
+
+             }
+            );
+          }
+
+         function callpay(amount,callback) {
+             if (typeof ('WeixinJSBridge') == "undefined") {
+                 if (document.addEventListener) {
+                     document.addEventListener('WeixinJSBridgeReady', jsApiCall(amount,callback), false);
+                 }
+                 else if (document.attachEvent) {
+                     document.attachEvent('WeixinJSBridgeReady', jsApiCall(amount,callback));
+                     document.attachEvent('onWeixinJSBridgeReady', jsApiCall(amount,callback));
+                 }
+             }
+             else {
+                jsApiCall(amount,callback);
+             }
+         }
+
       playbox();
+
+
     </script>
   </body>
 </html>

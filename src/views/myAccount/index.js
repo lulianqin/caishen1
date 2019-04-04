@@ -34,7 +34,7 @@ export default {
                     $vue.amount = rst.data.U_Amount;
                     $vue.lockAmount = rst.data.U_LockAmount;
                     $vue.totalAmount = rst.data.U_Amount+rst.data.U_LockAmount;
-                    $vue.txAmount = 0;
+                    $vue.txAmount = rst.data.U_TiXianAmount;
                 }
                 else{
                     alert(rst.msg);
