@@ -1,6 +1,6 @@
 import TabBar from '@/components/TabBar/index.vue'
 import LeftMenu from '@/components/LeftMenu/index.vue'
-import { getCookie,isWeiXin } from '@/utils/common.js'
+import { getCookie,isWeiXin,GetQueryString,setCookie } from '@/utils/common.js'
 import $ from 'jquery'
 
 const fanli = require('@/assets/images/fanli.png'),
@@ -58,12 +58,23 @@ export default {
         var username = getCookie("username");
         var $vue = this;
         var hashVal = window.location.hash;
+        var u= GetQueryString("u");
+
+        if(u!=null && u !="undefined" && u!="")
+        {
+            localStorage.setItem("u",u);
+            setCookie("u",u,7);
+        }
         //财神背景
         if(hashVal.indexOf("#n")>-1)
         {
            this.bgClass="caishen" + this.csIndex1[parseInt(hashVal.replace("#n",""))];
         }
-        if(openid)
+        if(openid==null || openid =="undefined" || openid=="")
+        {
+            openid = GetQueryString("openid");
+        }
+        if(openid!=null && openid !="undefined" && openid!="")
         {
             window.openid = openid;
             localStorage.setItem("openid",openid);
@@ -72,12 +83,20 @@ export default {
         // {
         //     window.openid = localStorage.getItem("openid");
         // }
-        else if(isWeiXin()==true){
-            location.href="/Mobile/WeiXin/GotoOauth?state=/";
+        else //if(isWeiXin()==true){
+        {
+            if(u!=null && u !="undefined" && u!="")
+            {
+                location.href="/Mobile/WeiXin/GotoOauth?state=&u="+u;
+            }
+            else{
+                location.href="/Mobile/WeiXin/GotoOauth";
+            }
+            return;
         }
-        else if(!username || username==""){
-            //location.href="/Mobile/Login";
-        }
+        // else if(!username || username==""){
+        //     //location.href="/Mobile/Login";
+        // }
 
         //获取用户基本信息
         $.ajax({
