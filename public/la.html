@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>熏香烟雾效果</title>
+        <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url(bg.png) center top no-repeat;
+            background-size: cover;
+        }
+        .candle-smoke {
+            position: relative;
+            overflow: hidden;
+            /* filter: brightness(200%); */
+            height: 80%;
+            width: 100%;
+            top:0;
+        }
+        .lu {
+            position: absolute;
+            overflow: hidden;
+            top: 0;
+            /* filter: brightness(200%); */
+            height: 90%;
+            width: 100%;
+            background: url(img/xianglu.png) center bottom no-repeat;
+        }
+        .candle-smoke .light {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(img/yan.png) center top no-repeat;
+            opacity: 0;
+        }
+        @keyframes light {
+            /* from {
+                transform: translate(0%, 2000px);
+            }
+            to {
+                transform: translate(0%, 100px);
+            } */
+            /* 0%   {transform: translate(0%,-100%);}
+            25%  {transform: translate(0%, -75%);}
+            50%  {transform: translate(0%, -50%);}
+            70%  {transform: translate(0%, -20%);}
+            100% {transform: translate(0%, 0%);} */
+        }
+        @keyframes smokeL {
+            0%   { opacity: 0; transform: scale(1) translate(0px, 1000px); }
+            60%  { opacity: 0.5; transform: scale(1.2) translate(20px, 300px); }
+            100% { opacity: 0; transform: scale(1.3) translate(40px, 0px); }
+        }
+
+        @keyframes smokeR {
+            0%   { opacity: 0; transform: scale(1) translate(0px, 1000px); }
+            60%  { opacity: 0.4; transform: scale(1.2) translate(-20px, 300px); }
+            100% { opacity: 0; transform: scale(1.3) translate(-40px, 0px); }
+        }
+        .candle-smoke .s0 { animation: smokeL 10s 0s linear infinite; }
+        .candle-smoke .s1 { animation: smokeR 10s 4s linear infinite; }
+        .candle-smoke .s2 { animation: smokeL 10s 8s linear infinite; }
+        .candle-smoke .s3 { animation: smokeR 10s 12s linear infinite; }
+        .candle-smoke .s4 { animation: smokeL 10s 4s linear; }
+        .candle-smoke .s5 { animation: smokeL 10s 5s infinite; }
+        .candle-smoke .s6 { animation: smokeL 10s 6s infinite; }
+        .candle-smoke .s7 { animation: smokeL 10s 7s infinite; }
+        .candle-smoke .s8 { animation: smokeL 10s 8s infinite; }
+        .candle-smoke .s9 { animation: smokeL 10s 9s infinite; }
+        </style>
+        <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    </head>
+<body>
+        <div class="lu"></div>
+        <div class="candle-smoke">
+        <div class="light s0"></div>
+        <div class="light s1"></div>
+       <div class="light s2"></div>
+        <div class="light s3"></div>
+         <!-- <div class="light s4"></div>
+        <div class="light s5"></div>
+        <div class="light s6"></div>
+        <div class="light s7"></div>
+        <div class="light s8"></div>
+        <div class="light s9"></div> -->
+    </div>
+
+<script>
+
+</script>
+</body>
+</html>

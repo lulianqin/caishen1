@@ -17,4 +17,3 @@
 <style lang="less" scoped>
     @import url('./index.less');
 </style>
-

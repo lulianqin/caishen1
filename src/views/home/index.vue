@@ -82,11 +82,11 @@
             </div>
         </div> -->
         <!--开光成功-->
-        <transition name="bounce">
-            <div class="kgSuccess" v-if="kgSuccessShow">
+        <!-- <transition name="bounce"> -->
+            <div id="kgSuccessBox" class="kgSuccess" v-show="kgSuccessShow">
                 <!-- <img src="../../assets/images/yuanbao.png"/> -->
             </div>
-        </transition>
+        <!-- </transition> -->
         <!--掉金元宝-->
         <div id="yuanbao"></div>
         <!--贡品香炉-->
@@ -94,6 +94,16 @@
             <img src="/img/gongpin.png" class="gongpin_i" v-if="show_gongpin_i"/>
             <img src="/img/xianglu.png" class="xianglu_i" v-if="show_xianglu_i" style="width:100px;"/>
             <img src="/img/gongpin.png" class="gongpin_i" v-if="show_gongpin_i"/>
+             
+        </div>
+        <div class="candle-smoke" v-if="show_xianglu_i" >
+            <div class="light s0"></div>
+            <div class="light s1"></div>
+            <div class="light s2"></div>
+            <div class="light s3"></div>
+            <div class="light s4"></div>
+            <div class="light s5"></div>
+            <div class="light s6"></div>
         </div>
     </div>
 </template>
@@ -180,6 +190,44 @@
         }
     }
     .mt10{margin-top:10px;}
+    .candle-smoke {
+        position: absolute;
+        overflow: hidden;
+        /* filter: brightness(200%); */
+        height: 80%;
+        width: 100%;
+        bottom:180px;
+        border-radius: 240px;
+        z-index: 0;
+    }
+    .candle-smoke .light {
+        position: absolute;
+        top: 0;
+        left: 35%;
+        right: 0;
+        bottom: 0;
+        background: url(/img/yan.png) center top no-repeat;
+        background-size: 60% auto;
+        opacity: 0;
+        width:30%;
+    }
+    @keyframes smokeL {
+        0%   { opacity: 0; transform: scale(1) translate(0px, 500px); }
+        60%  { opacity: 0.5; transform: scale(1.2) translate(10px, 180px); }
+        100% { opacity: 0; transform: scale(1.3) translate(5px, 0px); }
+    }
+    @keyframes smokeR {
+        0%   { opacity: 0; transform: scale(1) translate(0px, 500px); }
+        60%  { opacity: 0.4; transform: scale(1.2) translate(-10px, 180px); }
+        100% { opacity: 0; transform: scale(1.3) translate(-5px, 0px); }
+    }
+    .candle-smoke .s0 { animation: smokeL 15s 0s linear infinite; }
+    .candle-smoke .s1 { animation: smokeR 15s 2s linear infinite; }
+    .candle-smoke .s2 { animation: smokeL 15s 4s linear infinite; }
+    .candle-smoke .s3 { animation: smokeR 15s 6s linear infinite; }
+    .candle-smoke .s4 { animation: smokeL 15s 8s linear infinite; }
+    .candle-smoke .s5 { animation: smokeR 15s 10s linear infinite; }
+    .candle-smoke .s6 { animation: smokeL 15s 12    s linear infinite; }
 </style>
 
 

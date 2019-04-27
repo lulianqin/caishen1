@@ -98,6 +98,7 @@ export default {
         //     //location.href="/Mobile/Login";
         // }
 
+        
         //获取用户基本信息
         $.ajax({
             type: "GET",
@@ -114,7 +115,9 @@ export default {
                     }
                     if(rst.data.U_Is_Check==1)
                     {
-                        $vue.kgSuccessShow=true;            
+                        $vue.kgSuccessShow=true;
+                        //window.addEventListener("load", setup("kgSuccessBox"));
+                        //window.addEventListener("resize", resize);
                     }
                 }
                 else{
@@ -157,6 +160,14 @@ export default {
             $vue.show_gongpin_i =false;
         }
     },
+    mounted: function () {
+        //this.kgSuccessShow=true;
+        if(this.kgSuccessShow)
+        {
+            window.addEventListener("load", setup("kgSuccessBox"));
+            window.addEventListener("resize", resize);
+        }
+      },
     methods: {
         //左侧展开按钮点击事件，展开会员中心
         handleArrowClick() {
@@ -257,7 +268,7 @@ export default {
             }
             $vue.$dialog.confirm({
                 title: '',
-                message: '确认使用余额支付？'
+                message: '确认支付吗？'
               }).then(() => {
                 $vue.payRequest(thing);
               }).catch(() => {
@@ -267,61 +278,91 @@ export default {
         payRequest(thing)
         {
             var $vue = this;
-            $.ajax({
-                type: "GET",
-                url: "/Mobile/Api/PayThing",
-                data: {thing:thing},
-                dataType: "json",
-                async:false,
-                success: function(rst){
-                    if(rst.status==0){
-                        //this.article = rst.data;
-                        if(thing=="kg")
-                        {
-                            $vue.kaiguangShow = false;
-                            $vue.kgSuccessShow = true;
-                            $vue.$notify({message:'开光成功',background: '#07c160'});
-                        }
-                        else if(thing=="jx"){
-                            $vue.$notify({message:'支付成功',background: '#07c160'});
-                            $vue.show_xianglu_i = true;
-                            $vue.handleShowYuanBao();
-
-                            if(localStorage)
-                            {
-                                localStorage.setItem("jx","1");
-                                localStorage.setItem("jx_time",new Date().getTime());
-                            }
-                        }
-                        else if(thing=="gp"){
-                            $vue.$notify({message:'支付成功',background: '#07c160'});
-                            $vue.show_gongpin_i = true;
-                            $vue.gongpinShow = false;
-                            
-                            if(localStorage)
-                            {
-                                localStorage.setItem("gp","1");
-                                localStorage.setItem("gp_time",new Date().getTime());
-                            }
-                        }
-                        else if(thing=="cq"){
-                            $vue.$notify({message:'支付成功',background: '#07c160'});
-                            $vue.chouqianShow = false
-                            $vue.$router.push('/chouqianResult')
-                        }
-                    }
-                    else if(rst.status==-2)//余额不足
-                    {
-                        //微信在线支付
-                        callpay(rst.amount,function(){
-                            $vue.payRequest(thing);
-                        });
-                    }
-                    else{
-                        alert(rst.msg);
-                    }
+            if(thing!="gp")//不是贡品，直接走在线支付
+            {
+                 var amount = 1;
+                if (thing == "jx")
+                {
+                    amount = 1;
                 }
-            });
+                else if (thing == "kg")
+                {
+                    amount = 599;
+                }
+                else if (thing == "ys")
+                {
+                    amount = 1;
+                }
+                else if (thing == "cq")
+                {
+                    amount = 1;
+                }
+                else if (thing == "nc")
+                {
+                    amount = 1;
+                }
+                //微信在线支付
+                callpay(amount,function(){
+                    $vue.payRequest(thing);
+                });
+            }
+            else{
+                $.ajax({
+                    type: "GET",
+                    url: "/Mobile/Api/PayThing",
+                    data: {thing:thing},
+                    dataType: "json",
+                    async:false,
+                    success: function(rst){
+                        if(rst.status==0){
+                            //this.article = rst.data;
+                            if(thing=="kg")
+                            {
+                                $vue.kaiguangShow = false;
+                                $vue.kgSuccessShow = true;
+                                $vue.$notify({message:'开光成功',background: '#07c160'});
+                            }
+                            else if(thing=="jx"){
+                                $vue.$notify({message:'支付成功',background: '#07c160'});
+                                $vue.show_xianglu_i = true;
+                                $vue.handleShowYuanBao();
+
+                                if(localStorage)
+                                {
+                                    localStorage.setItem("jx","1");
+                                    localStorage.setItem("jx_time",new Date().getTime());
+                                }
+                            }
+                            else if(thing=="gp"){
+                                $vue.$notify({message:'支付成功',background: '#07c160'});
+                                $vue.show_gongpin_i = true;
+                                $vue.gongpinShow = false;
+                                
+                                if(localStorage)
+                                {
+                                    localStorage.setItem("gp","1");
+                                    localStorage.setItem("gp_time",new Date().getTime());
+                                }
+                            }
+                            else if(thing=="cq"){
+                                $vue.$notify({message:'支付成功',background: '#07c160'});
+                                $vue.chouqianShow = false
+                                $vue.$router.push('/chouqianResult')
+                            }
+                        }
+                        else if(rst.status==-2)//余额不足
+                        {
+                            //微信在线支付
+                            callpay(rst.amount,function(){
+                                $vue.payRequest(thing);
+                            });
+                        }
+                        else{
+                            alert(rst.msg);
+                        }
+                    }
+                });
+            }
         },
         footBarClick(val)
         {

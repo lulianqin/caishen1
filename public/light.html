@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>光效果</title>
+        <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+
+        .neon {
+            position: relative;
+            overflow: hidden;
+            /* filter: brightness(200%); */
+            height: 100%;
+            width: 100%;
+            background: url(bg.png) center top no-repeat;
+        }
+
+        .text {
+            height: 100%;
+            width: 100%;
+            background: url(bg.png) center top no-repeat;
+            background-size: cover;
+        }
+
+        .gradient {
+            position: absolute;
+            /* background: linear-gradient(45deg, red, gold, lightgreen, gold, red); */
+            background: linear-gradient(45deg, red, gold, lightgreen, gold, red);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* mix-blend-mode: multiply; */
+            /* animation: light 5s linear infinite; */
+            /* mix-blend-mode: color-dodge; */
+            display: none;
+        }
+
+        /* .spotlight {
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(
+                    circle,
+                    white,
+                    transparent 25%
+                ) center / 25% 25%,
+                radial-gradient(
+                    circle,
+                    white,
+                    black 25%
+                ) center / 12.5% 12.5%;
+            animation: light 5s linear infinite;
+            mix-blend-mode: color-dodge;
+        } */
+        .spotlight {
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(100deg, rgba(0,0,0,1), rgba(130,130,130,1),rgba(0,0,0,1), rgba(130,130,130,1),rgba(0,0,0,1));
+            background: linear-gradient(110deg, rgba(0,0,0,1), rgba(130,130,130,1),rgba(0,0,0,1), rgba(130,130,130,1),rgba(0,0,0,1));
+            animation: light 5s linear infinite;
+            mix-blend-mode: color-dodge;
+        }
+
+        @keyframes light {
+            to {
+                transform: translate(50%, 50%);
+            }
+        }
+
+        </style>
+        <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    </head>
+<body>
+    <div class="neon">
+        <div class="text"></div>
+        <div class="gradient"></div>
+        <div class="spotlight"></div>
+    </div>
+
+<script>
+(function(){
+	
+	
+	
+}());
+</script>
+</body>
+</html>
